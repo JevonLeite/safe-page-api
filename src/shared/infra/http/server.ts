@@ -5,6 +5,9 @@ import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import { createServer } from 'http';
 
+import '@shared/container';
+import '@shared/infra/database';
+
 import AppError from '@shared/errors/AppError';
 
 import routes from './routes';
