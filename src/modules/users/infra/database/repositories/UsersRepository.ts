@@ -12,15 +12,22 @@ export default class UsersRepository implements IUsersRepository {
     this.ormRepository = AppDataSource.getRepository(User);
   }
 
-  async find(): Promise<User[]> {
-    return this.ormRepository.createQueryBuilder('user').getMany();
+  async findLast(): Promise<User | null> {
+    return this.ormRepository
+      .createQueryBuilder('user')
+      .orderBy('created_at', 'DESC')
+      .getOne();
   }
 
-  async create(): Promise<User> {
-    return this.ormRepository.create();
+  async create(token: string): Promise<User> {
+    return this.ormRepository.save({ token });
   }
 
-  async delete(): Promise<void> {
+  async deleteAll(): Promise<void> {
     await this.ormRepository.clear();
+  }
+
+  async deleteByToken(token: string): Promise<void> {
+    await this.ormRepository.delete({ token });
   }
 }

@@ -1,9 +1,14 @@
 import { injectable, inject } from 'tsyringe';
+import { v4 as uuidv4 } from 'uuid';
 
 import AppError from '@shared/errors/AppError';
 
 import User from '@modules/users/infra/database/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+
+interface ICreateUserProps {
+  token?: string;
+}
 
 @injectable()
 export default class CreateUserService {
@@ -12,10 +17,14 @@ export default class CreateUserService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  async execute(): Promise<User> {
-    const users = await this.usersRepository.find();
+  async execute({ token }: ICreateUserProps): Promise<User> {
+    const user = await this.usersRepository.findLast();
 
-    if (users.length > 0) {
+    if (
+      user &&
+      user.token !== token &&
+      new Date().getTime() - user.created_at.getTime() < 60000
+    ) {
       throw new AppError(
         'Não foi possível acessar página, pois ' +
           'está reservado por outro usuário',
@@ -23,6 +32,8 @@ export default class CreateUserService {
       )
     }
 
-    return this.usersRepository.create();
+    await this.usersRepository.deleteAll();
+
+    return this.usersRepository.create(uuidv4());
   }
 }

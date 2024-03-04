@@ -1,7 +1,8 @@
 import User from '../infra/database/entities/User';
 
 export default interface IUsersRepository {
-  find(): Promise<User[]>;
-  create(): Promise<User>;
-  delete(): Promise<void>;
+  findLast(): Promise<User | null>;
+  create(token: string): Promise<User>;
+  deleteAll(): Promise<void>;
+  deleteByToken(token: string): Promise<void>;
 }

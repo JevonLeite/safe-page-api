@@ -6,6 +6,9 @@ export default class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column('uuid')
+  token: string;
+
   @Exclude()
   @CreateDateColumn()
   created_at: Date

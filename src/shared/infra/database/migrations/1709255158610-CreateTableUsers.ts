@@ -14,6 +14,10 @@ export class CreateTableUsers1709255158610 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
+            name: 'token',
+            type: 'uuid',
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

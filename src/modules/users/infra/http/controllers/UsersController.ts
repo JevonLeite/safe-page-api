@@ -5,18 +5,22 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 import DeleteUserService from '@modules/users/services/DeleteUserService';
 
 export default class UsersController {
-  async create(_: Request, response: Response): Promise<Response> {
+  async create(request: Request, response: Response): Promise<Response> {
+    const { token } = request.body;
+
     const createUser = container.resolve(CreateUserService);
 
-    const user = await createUser.execute();
+    const user = await createUser.execute({ token });
 
     return response.json(user);
   }
 
-  async delete(_: Request, response: Response): Promise<Response> {
+  async delete(request: Request, response: Response): Promise<Response> {
+    const { token } = request.params;
+
     const deleteUser = container.resolve(DeleteUserService);
 
-    await deleteUser.execute();
+    await deleteUser.execute({ token });
 
     return response.json();
   }
