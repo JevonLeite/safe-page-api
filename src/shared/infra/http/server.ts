@@ -13,7 +13,7 @@ import AppError from '@shared/errors/AppError';
 import routes from './routes';
 
 const app = express();
-const server = createServer();
+const server = createServer(app);
 
 app.use(express.json());
 app.use(routes);
@@ -30,8 +30,8 @@ app.use((error: Error, __: Request, response: Response, _: NextFunction) => {
     .json({ status: 'error', message: 'Internal Server Error' })
 })
 
-server.listen(process.env.PORT || 3333, () => {
-  console.log('Safe Page API Started!');
+server.listen(process.env.PORT, () => {
+  console.log(`Safe Page API Started on port ${process.env.PORT}!`);
 });
 
 export { server };
