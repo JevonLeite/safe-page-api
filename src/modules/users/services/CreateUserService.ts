@@ -18,18 +18,21 @@ export default class CreateUserService {
   ) {}
 
   async execute({ token }: ICreateUserProps): Promise<User> {
-    const user = await this.usersRepository.findLast();
+    const users = await this.usersRepository.find();
 
-    if (
-      user &&
-      user.token !== token &&
-      new Date().getTime() - user.created_at.getTime() < 60000
-    ) {
-      throw new AppError(
-        'Não foi possível acessar página, pois ' +
-          'está reservado por outro usuário',
-        401,
-      )
+    if (users.length > 0) {
+      const findUser = users.find(user => user.token === token);
+
+      if (
+        findUser &&
+        new Date().getTime() - findUser.created_at.getTime() < 60000
+      ) {
+        throw new AppError(
+          'Não foi possível acessar página, pois ' +
+            'está reservado por outro usuário',
+          401,
+        )
+      }
     }
 
     await this.usersRepository.deleteAll();

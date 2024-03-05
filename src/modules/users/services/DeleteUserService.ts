@@ -15,7 +15,13 @@ export default class DeleteUserService {
 
   async execute({ token }: IDeleteUserProps): Promise<void> {
     if (token) {
-      await this.usersRepository.deleteByToken(token);
+      const users = await this.usersRepository.find();
+
+      const findUser = users.find(user => user.token === token);
+
+      if (findUser) {
+        await this.usersRepository.deleteAll();
+      }
     }
   }
 }
