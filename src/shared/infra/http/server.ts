@@ -24,13 +24,13 @@ app.use((error: Error, __: Request, response: Response, _: NextFunction) => {
   if (error instanceof AppError) {
     return response
       .status(error.statusCode)
-      .json({ status: 'error', message: error.message })
+      .json({ status: 'error', message: error.message });
   }
 
   return response
     .status(500)
-    .json({ status: 'error', message: 'Internal Server Error' })
-})
+    .json({ status: 'error', message: 'Internal Server Error' });
+});
 
 server.listen(process.env.PORT, () => {
   console.log(`Safe Page API Started on port ${process.env.PORT}!`);

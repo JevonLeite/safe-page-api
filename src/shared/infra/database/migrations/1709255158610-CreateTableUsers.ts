@@ -22,9 +22,9 @@ export class CreateTableUsers1709255158610 implements MigrationInterface {
             type: 'timestamp',
             default: 'now()',
           },
-        ]
-      })
-    )
+        ],
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
