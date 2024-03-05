@@ -13,7 +13,10 @@ export default class UsersRepository implements IUsersRepository {
   }
 
   async find(): Promise<User[]> {
-    return this.ormRepository.createQueryBuilder('user').getMany();
+    return this.ormRepository
+      .createQueryBuilder('user')
+      .orderBy('user.created_at', 'ASC')
+      .getMany();
   }
 
   async create(token: string): Promise<User> {

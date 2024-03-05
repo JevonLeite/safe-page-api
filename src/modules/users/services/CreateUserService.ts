@@ -24,14 +24,15 @@ export default class CreateUserService {
       const findUser = users.find(user => user.token === token);
 
       if (
-        findUser &&
-        new Date().getTime() - findUser.created_at.getTime() < 60000
+        !findUser &&
+        new Date().getTime() - users[users.length - 1].created_at.getTime() <
+          60000
       ) {
         throw new AppError(
           'Não foi possível acessar página, pois ' +
             'está reservado por outro usuário',
           401,
-        )
+        );
       }
     }
 
